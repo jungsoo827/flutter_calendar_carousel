@@ -77,6 +77,7 @@ class CalendarCarousel<T> extends StatefulWidget {
   final bool staticSixWeekFormat;
   final bool isScrollable;
   final bool showOnlyCurrentMonthDate;
+  final dynamic dayContentBuilder;
 
   CalendarCarousel({
     this.viewportFraction = 1.0,
@@ -140,6 +141,7 @@ class CalendarCarousel<T> extends StatefulWidget {
     this.staticSixWeekFormat = false,
     this.isScrollable = true,
     this.showOnlyCurrentMonthDate = false,
+    this.dayContentBuilder,
   });
 
   @override
@@ -212,53 +214,56 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
     } else {
       _isReloadSelectedDate = true;
     }
+
+    List<Widget> containerList = new List();
+    if (widget.showHeader == true) {
+      containerList.add(CalendarHeader(
+        showHeader: widget.showHeader,
+        headerMargin: widget.headerMargin,
+        headerTitle: widget.weekFormat
+          ? '${_localeDate.format(_weeks[1].first)}'
+          : '${_localeDate.format(this._dates[1])}',
+        headerTextStyle: widget.headerTextStyle,
+        showHeaderButtons: widget.showHeaderButton,
+        headerIconColor: widget.iconColor,
+        leftButtonIcon: widget.leftButtonIcon,
+        rightButtonIcon: widget.rightButtonIcon,
+        onLeftButtonPressed: () => _setDate(0),
+        onRightButtonPressed: () => _setDate(2),
+        isTitleTouchable: widget.headerTitleTouchable,
+        onHeaderTitlePressed: widget.onHeaderTitlePressed != null
+          ? widget.onHeaderTitlePressed
+          : () => _selectDateFromPicker(),
+      ));
+    }
+    containerList.add(WeekdayRow(
+      firstDayOfWeek,
+      showWeekdays: widget.showWeekDays,
+      weekdayFormat: widget.weekDayFormat,
+      weekdayMargin: widget.weekDayMargin,
+      weekdayTextStyle: widget.weekdayTextStyle,
+      localeDate: _localeDate,
+    ));
+    containerList.add(Expanded(
+      child: PageView.builder(
+        itemCount: 3,
+        physics: widget.isScrollable
+          ? ScrollPhysics()
+          : NeverScrollableScrollPhysics(),
+        onPageChanged: (index) {
+          this._setDate(index);
+        },
+        controller: _controller,
+        itemBuilder: (context, index) {
+          return widget.weekFormat ? weekBuilder(index) : builder(index);
+        },
+        pageSnapping: false,
+      )));
     return Container(
       width: widget.width,
       height: widget.height,
       child: Column(
-        children: <Widget>[
-          CalendarHeader(
-            showHeader: widget.showHeader,
-            headerMargin: widget.headerMargin,
-            headerTitle: widget.weekFormat
-                ? '${_localeDate.format(_weeks[1].first)}'
-                : '${_localeDate.format(this._dates[1])}',
-            headerTextStyle: widget.headerTextStyle,
-            showHeaderButtons: widget.showHeaderButton,
-            headerIconColor: widget.iconColor,
-            leftButtonIcon: widget.leftButtonIcon,
-            rightButtonIcon: widget.rightButtonIcon,
-            onLeftButtonPressed: () => _setDate(0),
-            onRightButtonPressed: () => _setDate(2),
-            isTitleTouchable: widget.headerTitleTouchable,
-            onHeaderTitlePressed: widget.onHeaderTitlePressed != null
-                ? widget.onHeaderTitlePressed
-                : () => _selectDateFromPicker(),
-          ),
-          WeekdayRow(
-            firstDayOfWeek,
-            showWeekdays: widget.showWeekDays,
-            weekdayFormat: widget.weekDayFormat,
-            weekdayMargin: widget.weekDayMargin,
-            weekdayTextStyle: widget.weekdayTextStyle,
-            localeDate: _localeDate,
-          ),
-          Expanded(
-              child: PageView.builder(
-            itemCount: 3,
-            physics: widget.isScrollable
-                ? ScrollPhysics()
-                : NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              this._setDate(index);
-            },
-            controller: _controller,
-            itemBuilder: (context, index) {
-              return widget.weekFormat ? weekBuilder(index) : builder(index);
-            },
-            pageSnapping: false,
-          )),
-        ],
+        children: containerList,
       ),
     );
   }
@@ -360,12 +365,13 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                   return Container(
                     margin: EdgeInsets.all(widget.dayPadding),
                     child: FlatButton(
-                      color:
-                          isSelectedDay && widget.selectedDayButtonColor != null
-                              ? widget.selectedDayButtonColor
-                              : isToday && widget.todayButtonColor != null
-                                  ? widget.todayButtonColor
-                                  : widget.dayButtonColor,
+
+//                      color:
+//                          isSelectedDay && widget.selectedDayButtonColor != null
+//                              ? widget.selectedDayButtonColor
+//                              : isToday && widget.todayButtonColor != null
+//                                  ? widget.todayButtonColor
+//                                  : widget.dayButtonColor,
                       onPressed: () => _onDayPressed(now),
                       padding: EdgeInsets.all(widget.dayPadding),
                       shape: widget.daysHaveCircularBorder == null
@@ -387,7 +393,9 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                                   ),
                                 )
                               : RoundedRectangleBorder(
+
                                   side: BorderSide(
+                                    width: 0,
                                     color: isSelectedDay
                                         ? widget.selectedDayBorderColor
                                         : isToday && widget.todayBorderColor != null
@@ -401,61 +409,7 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                                                         .thisMonthDayBorderColor,
                                   ),
                                 ),
-                      child: Stack(
-                        children: <Widget>[
-                          Center(
-                            child: DefaultTextStyle(
-                              style: (_localeDate.dateSymbols.WEEKENDRANGE
-                                          .contains(
-                                              (index - 1 + firstDayOfWeek) %
-                                                  7)) &&
-                                      !isSelectedDay &&
-                                      !isToday
-                                  ? (isPrevMonthDay
-                                      ? defaultPrevDaysTextStyle
-                                      : isNextMonthDay
-                                          ? defaultNextDaysTextStyle
-                                          : isSelectable
-                                              ? defaultWeekendTextStyle
-                                              : defaultInactiveWeekendTextStyle)
-                                  : isToday
-                                      ? defaultTodayTextStyle
-                                      : isSelectable
-                                          ? defaultTextStyle
-                                          : defaultInactiveDaysTextStyle,
-                              child: Text(
-                                '${now.day}',
-                                style: (_localeDate.dateSymbols.WEEKENDRANGE
-                                            .contains(
-                                                (index - 1 + firstDayOfWeek) %
-                                                    7)) &&
-                                        !isSelectedDay &&
-                                        isThisMonthDay &&
-                                        !isToday
-                                    ? (isSelectable
-                                        ? widget.weekendTextStyle
-                                        : widget.inactiveWeekendTextStyle)
-                                    : isPrevMonthDay
-                                        ? widget.prevDaysTextStyle
-                                        : isNextMonthDay
-                                            ? widget.nextDaysTextStyle
-                                            : isSelectedDay
-                                                ? widget.selectedDayTextStyle
-                                                : isToday
-                                                    ? widget.todayTextStyle
-                                                    : isSelectable
-                                                        ? widget.daysTextStyle
-                                                        : widget
-                                                            .inactiveDaysTextStyle,
-                                maxLines: 1,
-                              ),
-                            ),
-                          ),
-                          widget.markedDatesMap != null
-                              ? _renderMarkedMapContainer(now)
-                              : _renderMarked(now),
-                        ],
-                      ),
+                      child: widget.dayContentBuilder(context, now, isThisMonthDay)
                     ),
                   );
                 }),
@@ -552,12 +506,12 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                     return Container(
                       margin: EdgeInsets.all(widget.dayPadding),
                       child: FlatButton(
-                        color: isSelectedDay &&
-                                widget.selectedDayButtonColor != null
-                            ? widget.selectedDayButtonColor
-                            : isToday && widget.todayButtonColor != null
-                                ? widget.todayButtonColor
-                                : widget.dayButtonColor,
+//                        color: isSelectedDay &&
+//                                widget.selectedDayButtonColor != null
+//                            ? widget.selectedDayButtonColor
+//                            : isToday && widget.todayButtonColor != null
+//                                ? widget.todayButtonColor
+//                                : widget.dayButtonColor,
                         onPressed: () => _onDayPressed(now),
                         padding: EdgeInsets.all(widget.dayPadding),
                         shape: widget.daysHaveCircularBorder == null
