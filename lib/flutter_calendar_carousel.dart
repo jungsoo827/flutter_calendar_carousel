@@ -77,7 +77,7 @@ class CalendarCarousel<T> extends StatefulWidget {
   final bool staticSixWeekFormat;
   final bool isScrollable;
   final bool showOnlyCurrentMonthDate;
-  final dynamic dayContentBuilder;
+  final Function(BuildContext context, DateTime currentDate, bool currentMonth) dayContentBuilder;
 
   CalendarCarousel({
     this.viewportFraction = 1.0,
@@ -365,13 +365,12 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                   return Container(
                     margin: EdgeInsets.all(widget.dayPadding),
                     child: FlatButton(
-
-//                      color:
-//                          isSelectedDay && widget.selectedDayButtonColor != null
-//                              ? widget.selectedDayButtonColor
-//                              : isToday && widget.todayButtonColor != null
-//                                  ? widget.todayButtonColor
-//                                  : widget.dayButtonColor,
+                      color:
+                          isSelectedDay && widget.selectedDayButtonColor != null
+                              ? widget.selectedDayButtonColor
+                              : isToday && widget.todayButtonColor != null
+                                  ? widget.todayButtonColor
+                                  : widget.dayButtonColor,
                       onPressed: () => _onDayPressed(now),
                       padding: EdgeInsets.all(widget.dayPadding),
                       shape: widget.daysHaveCircularBorder == null
@@ -379,7 +378,7 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                           : widget.daysHaveCircularBorder
                               ? CircleBorder(
                                   side: BorderSide(
-                                    color: isSelectedDay
+                                    color: isSelectedDay && widget.selectedDayBorderColor != null
                                         ? widget.selectedDayBorderColor
                                         : isToday && widget.todayBorderColor != null
                                             ? widget.todayBorderColor
@@ -395,8 +394,7 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                               : RoundedRectangleBorder(
 
                                   side: BorderSide(
-                                    width: 0,
-                                    color: isSelectedDay
+                                    color: isSelectedDay && widget.selectedDayBorderColor != null
                                         ? widget.selectedDayBorderColor
                                         : isToday && widget.todayBorderColor != null
                                             ? widget.todayBorderColor
@@ -506,12 +504,12 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                     return Container(
                       margin: EdgeInsets.all(widget.dayPadding),
                       child: FlatButton(
-//                        color: isSelectedDay &&
-//                                widget.selectedDayButtonColor != null
-//                            ? widget.selectedDayButtonColor
-//                            : isToday && widget.todayButtonColor != null
-//                                ? widget.todayButtonColor
-//                                : widget.dayButtonColor,
+                        color: isSelectedDay &&
+                                widget.selectedDayButtonColor != null
+                            ? widget.selectedDayButtonColor
+                            : isToday && widget.todayButtonColor != null
+                                ? widget.todayButtonColor
+                                : widget.dayButtonColor,
                         onPressed: () => _onDayPressed(now),
                         padding: EdgeInsets.all(widget.dayPadding),
                         shape: widget.daysHaveCircularBorder == null
@@ -519,7 +517,7 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                             : widget.daysHaveCircularBorder
                                 ? CircleBorder(
                                     side: BorderSide(
-                                      color: isSelectedDay
+                                      color: isSelectedDay && widget.selectedDayBorderColor != null
                                           ? widget.selectedDayBorderColor
                                           : isToday &&
                                                   widget.todayBorderColor !=
@@ -537,7 +535,7 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                                   )
                                 : RoundedRectangleBorder(
                                     side: BorderSide(
-                                      color: isSelectedDay
+                                      color: isSelectedDay && widget.selectedDayBorderColor != null
                                           ? widget.selectedDayBorderColor
                                           : isToday &&
                                                   widget.todayBorderColor !=
