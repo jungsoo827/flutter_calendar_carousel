@@ -5,10 +5,10 @@ author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/dooboolab/flutter_calendar_carousel
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  intl: ^0.15.7
+  intl: ^0.16.0
   flutter:
     sdk: flutter
   date_utils: ^0.1.0
