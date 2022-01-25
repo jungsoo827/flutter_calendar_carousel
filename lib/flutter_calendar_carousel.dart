@@ -2,7 +2,7 @@ library flutter_calendar_dooboo;
 
 import 'dart:async';
 
-import 'package:date_utils/date_utils.dart';
+import 'package:date_utils/date_utils.dart' as CustomDateUtils;
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/src/default_styles.dart';
@@ -599,10 +599,10 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
   List<DateTime> _getDaysInWeek([DateTime selectedDate]) {
     if (selectedDate == null) selectedDate = new DateTime.now();
 
-    var firstDayOfCurrentWeek = Utils.firstDayOfWeek(selectedDate);
-    var lastDayOfCurrentWeek = Utils.lastDayOfWeek(selectedDate);
+    var firstDayOfCurrentWeek = CustomDateUtils.DateUtils.firstDayOfWeek(selectedDate);
+    var lastDayOfCurrentWeek = CustomDateUtils.DateUtils.lastDayOfWeek(selectedDate);
 
-    return Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+    return CustomDateUtils.DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
         .toList();
   }
 
