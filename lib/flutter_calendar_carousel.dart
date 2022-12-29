@@ -364,14 +364,13 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                     isSelectable = false;
                   return Container(
                     margin: EdgeInsets.all(widget.dayPadding),
-                    child: FlatButton(
-                      color:
+                    child: TextButton(style : TextButton.styleFrom(
+                      backgroundColor:
                           isSelectedDay && widget.selectedDayButtonColor != null
                               ? widget.selectedDayButtonColor
                               : isToday && widget.todayButtonColor != null
                                   ? widget.todayButtonColor
                                   : widget.dayButtonColor,
-                      onPressed: () => _onDayPressed(now),
                       padding: EdgeInsets.all(widget.dayPadding),
                       shape: widget.daysHaveCircularBorder == null
                           ? CircleBorder()
@@ -407,6 +406,8 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                                                         .thisMonthDayBorderColor,
                                   ),
                                 ),
+                    ),
+                      onPressed: () => _onDayPressed(now),
                       child: widget.dayContentBuilder(context, now, isThisMonthDay)
                     ),
                   );
@@ -503,54 +504,56 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                       isSelectable = false;
                     return Container(
                       margin: EdgeInsets.all(widget.dayPadding),
-                      child: FlatButton(
-                        color: isSelectedDay &&
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                        padding: EdgeInsets.all(widget.dayPadding),
+                        backgroundColor: isSelectedDay &&
                                 widget.selectedDayButtonColor != null
                             ? widget.selectedDayButtonColor
                             : isToday && widget.todayButtonColor != null
                                 ? widget.todayButtonColor
                                 : widget.dayButtonColor,
+                          shape: widget.daysHaveCircularBorder == null
+                              ? CircleBorder()
+                              : widget.daysHaveCircularBorder
+                              ? CircleBorder(
+                            side: BorderSide(
+                              color: isSelectedDay && widget.selectedDayBorderColor != null
+                                  ? widget.selectedDayBorderColor
+                                  : isToday &&
+                                  widget.todayBorderColor !=
+                                      null
+                                  ? widget.todayBorderColor
+                                  : isPrevMonthDay
+                                  ? widget
+                                  .prevMonthDayBorderColor
+                                  : isNextMonthDay
+                                  ? widget
+                                  .nextMonthDayBorderColor
+                                  : widget
+                                  .thisMonthDayBorderColor,
+                            ),
+                          )
+                              : RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: isSelectedDay && widget.selectedDayBorderColor != null
+                                  ? widget.selectedDayBorderColor
+                                  : isToday &&
+                                  widget.todayBorderColor !=
+                                      null
+                                  ? widget.todayBorderColor
+                                  : isPrevMonthDay
+                                  ? widget
+                                  .prevMonthDayBorderColor
+                                  : isNextMonthDay
+                                  ? widget
+                                  .nextMonthDayBorderColor
+                                  : widget
+                                  .thisMonthDayBorderColor,
+                            ),
+                          ),
+                        ),
                         onPressed: () => _onDayPressed(now),
-                        padding: EdgeInsets.all(widget.dayPadding),
-                        shape: widget.daysHaveCircularBorder == null
-                            ? CircleBorder()
-                            : widget.daysHaveCircularBorder
-                                ? CircleBorder(
-                                    side: BorderSide(
-                                      color: isSelectedDay && widget.selectedDayBorderColor != null
-                                          ? widget.selectedDayBorderColor
-                                          : isToday &&
-                                                  widget.todayBorderColor !=
-                                                      null
-                                              ? widget.todayBorderColor
-                                              : isPrevMonthDay
-                                                  ? widget
-                                                      .prevMonthDayBorderColor
-                                                  : isNextMonthDay
-                                                      ? widget
-                                                          .nextMonthDayBorderColor
-                                                      : widget
-                                                          .thisMonthDayBorderColor,
-                                    ),
-                                  )
-                                : RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color: isSelectedDay && widget.selectedDayBorderColor != null
-                                          ? widget.selectedDayBorderColor
-                                          : isToday &&
-                                                  widget.todayBorderColor !=
-                                                      null
-                                              ? widget.todayBorderColor
-                                              : isPrevMonthDay
-                                                  ? widget
-                                                      .prevMonthDayBorderColor
-                                                  : isNextMonthDay
-                                                      ? widget
-                                                          .nextMonthDayBorderColor
-                                                      : widget
-                                                          .thisMonthDayBorderColor,
-                                    ),
-                                  ),
                         child: Stack(
                           children: <Widget>[
                             Center(
