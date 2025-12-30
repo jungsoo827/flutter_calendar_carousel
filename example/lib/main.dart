@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     },
   );
 
-  CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
+  late CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
 
   @override
   void initState() {
@@ -171,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.blue,
       ),
       markedDateIconBuilder: (event) {
-        return event.icon;
+        return event.icon!;
       },
       todayBorderColor: Colors.green,
       markedDateMoreShowTotal:
@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
           false, // null for not showing hidden events indicator
       showHeader: false,
       markedDateIconBuilder: (event) {
-        return event.icon;
+        return event.icon!;
       },
       todayTextStyle: TextStyle(
         color: Colors.blue,
@@ -251,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         fontSize: 24.0,
                       ),
                     )),
-                    FlatButton(
+                    ElevatedButton(
                       child: Text('PREV'),
                       onPressed: () {
                         setState(() {
@@ -262,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         });
                       },
                     ),
-                    FlatButton(
+                    ElevatedButton(
                       child: Text('NEXT'),
                       onPressed: () {
                         setState(() {

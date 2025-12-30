@@ -4,7 +4,7 @@ import 'default_styles.dart' show defaultHeaderTextStyle;
 class CalendarHeader extends StatelessWidget {
   /// Passing in values for [leftButtonIcon] or [rightButtonIcon] will override [headerIconColor]
   CalendarHeader(
-      {@required this.headerTitle,
+      {required this.headerTitle,
       this.headerMargin,
       this.showHeader,
       this.headerTextStyle,
@@ -12,26 +12,26 @@ class CalendarHeader extends StatelessWidget {
       this.headerIconColor,
       this.leftButtonIcon,
       this.rightButtonIcon,
-      @required this.onLeftButtonPressed,
-      @required this.onRightButtonPressed,
+      required this.onLeftButtonPressed,
+      required this.onRightButtonPressed,
       this.isTitleTouchable,
-      @required this.onHeaderTitlePressed});
+      required this.onHeaderTitlePressed});
 
   final String headerTitle;
-  final EdgeInsetsGeometry headerMargin;
-  final bool showHeader;
-  final TextStyle headerTextStyle;
-  final bool showHeaderButtons;
-  final Color headerIconColor;
-  final Widget leftButtonIcon;
-  final Widget rightButtonIcon;
+  final EdgeInsetsGeometry? headerMargin;
+  final bool? showHeader;
+  final TextStyle? headerTextStyle;
+  final bool? showHeaderButtons;
+  final Color? headerIconColor;
+  final Widget? leftButtonIcon;
+  final Widget? rightButtonIcon;
   final VoidCallback onLeftButtonPressed;
   final VoidCallback onRightButtonPressed;
-  final bool isTitleTouchable;
+  final bool? isTitleTouchable;
   final VoidCallback onHeaderTitlePressed;
 
   TextStyle get getTextStyle =>
-      headerTextStyle != null ? headerTextStyle : defaultHeaderTextStyle;
+      headerTextStyle != null ? headerTextStyle! : defaultHeaderTextStyle;
 
   Widget _leftButton() => IconButton(
         onPressed: onLeftButtonPressed,
@@ -49,7 +49,7 @@ class CalendarHeader extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => showHeader
+  Widget build(BuildContext context) => showHeader!
       ? Container(
           margin: headerMargin,
           child: DefaultTextStyle(
@@ -57,11 +57,11 @@ class CalendarHeader extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    showHeaderButtons ? _leftButton() : Container(),
-                    isTitleTouchable
+                    showHeaderButtons! ? _leftButton() : Container(),
+                    isTitleTouchable!
                         ? _headerTouchable()
                         : Text(headerTitle, style: getTextStyle),
-                    showHeaderButtons ? _rightButton() : Container(),
+                    showHeaderButtons! ? _rightButton() : Container(),
                   ])),
         )
       : Container();

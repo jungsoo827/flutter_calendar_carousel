@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 class WeekdayRow extends StatelessWidget {
   WeekdayRow(
       this.firstDayOfWeek,
-      {@required this.showWeekdays,
-      @required this.weekdayFormat,
-      @required this.weekdayMargin,
-      @required this.weekdayTextStyle,
-      @required this.localeDate});
+      {required this.showWeekdays,
+      required this.weekdayFormat,
+      required this.weekdayMargin,
+      required this.weekdayTextStyle,
+      required this.localeDate});
 
   final bool showWeekdays;
   final WeekdayFormat weekdayFormat;

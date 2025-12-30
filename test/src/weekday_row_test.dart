@@ -17,7 +17,7 @@ void main() {
         showWeekdays: true,
         weekdayFormat: WeekdayFormat.short,
         weekdayMargin: margin,
-        weekdayTextStyle: null,
+        weekdayTextStyle: TextStyle(),
         localeDate: locale,
       ),
     ));
@@ -37,7 +37,7 @@ void main() {
       showWeekdays: true,
       weekdayFormat: WeekdayFormat.standaloneNarrow,
       weekdayMargin: margin,
-      weekdayTextStyle: null,
+      weekdayTextStyle: TextStyle(),
       localeDate: locale,
     )));
 
@@ -57,7 +57,7 @@ void main() {
       showWeekdays: true,
       weekdayFormat: WeekdayFormat.standalone,
       weekdayMargin: margin,
-      weekdayTextStyle: null,
+      weekdayTextStyle: TextStyle(),
       localeDate: locale,
     )));
 
@@ -76,7 +76,7 @@ void main() {
       showWeekdays: true,
       weekdayFormat: WeekdayFormat.standaloneShort,
       weekdayMargin: margin,
-      weekdayTextStyle: null,
+      weekdayTextStyle: TextStyle(),
       localeDate: locale,
     )));
 
@@ -90,7 +90,7 @@ void main() {
   });
 
   testWidgets('test row does not render', (WidgetTester tester) async {
-    final emptyContainer = WeekdayRow(0, showWeekdays: false);
+    final emptyContainer = WeekdayRow(0, showWeekdays: false, weekdayFormat:WeekdayFormat.short ,       weekdayMargin:EdgeInsets.zero,weekdayTextStyle: TextStyle(), localeDate: DateFormat.ABBR_MONTH_DAY);
 
     await tester.pumpWidget(emptyContainer);
 
