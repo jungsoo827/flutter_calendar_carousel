@@ -332,15 +332,15 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                   TextStyle defaultTextStyle;
                   if (isPrevMonthDay && !widget.showOnlyCurrentMonthDate) {
                     now = now.subtract(Duration(days: _startWeekday - index));
-                    textStyle = widget.prevDaysTextStyle!;
+                    textStyle = widget.prevDaysTextStyle ?? defaultPrevDaysTextStyle;
                     defaultTextStyle = defaultPrevDaysTextStyle;
                   } else if (isThisMonthDay) {
                     now = DateTime(year, month, index + 1 - _startWeekday);
                     textStyle = isSelectedDay
-                        ? widget.selectedDayTextStyle!
+                        ? widget.selectedDayTextStyle ?? defaultSelectedDayTextStyle
                         : isToday
-                            ? widget.todayTextStyle!
-                            : widget.daysTextStyle!;
+                            ? widget.todayTextStyle ?? defaultTodayTextStyle
+                            : widget.daysTextStyle ?? defaultDaysTextStyle;
                     defaultTextStyle = isSelectedDay
                         ? defaultSelectedDayTextStyle
                         : isToday
@@ -348,7 +348,7 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                             : defaultDaysTextStyle;
                   } else if (!widget.showOnlyCurrentMonthDate) {
                     now = DateTime(year, month, index + 1 - _startWeekday);
-                    textStyle = widget.nextDaysTextStyle!;
+                    textStyle = widget.nextDaysTextStyle ?? defaultNextDaysTextStyle;
                     defaultTextStyle = defaultNextDaysTextStyle;
                   } else {
                     return Container();
@@ -474,21 +474,21 @@ class _CalendarState<T> extends State<CalendarCarousel<T>> {
                     TextStyle textStyle;
                     TextStyle defaultTextStyle;
                     if (isPrevMonthDay && !widget.showOnlyCurrentMonthDate) {
-                      textStyle = widget.prevDaysTextStyle!;
+                      textStyle = widget.prevDaysTextStyle ?? defaultPrevDaysTextStyle;
                       defaultTextStyle = defaultPrevDaysTextStyle;
                     } else if (isThisMonthDay) {
                       textStyle = isSelectedDay
-                          ? widget.selectedDayTextStyle!
+                          ? widget.selectedDayTextStyle ?? defaultSelectedDayTextStyle
                           : isToday
-                              ? widget.todayTextStyle!
-                              : widget.daysTextStyle!;
+                              ? widget.todayTextStyle ?? defaultTodayTextStyle
+                              : widget.daysTextStyle ?? defaultDaysTextStyle;
                       defaultTextStyle = isSelectedDay
                           ? defaultSelectedDayTextStyle
                           : isToday
                               ? defaultTodayTextStyle
                               : defaultDaysTextStyle;
                     } else if (!widget.showOnlyCurrentMonthDate) {
-                      textStyle = widget.nextDaysTextStyle!;
+                      textStyle = widget.nextDaysTextStyle ?? defaultNextDaysTextStyle;
                       defaultTextStyle = defaultNextDaysTextStyle;
                     } else {
                       return Container();
